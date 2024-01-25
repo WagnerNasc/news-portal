@@ -16,20 +16,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   app.useGlobalInterceptors(new TransformInterceptor());
 
-  await app
-    .getHttpAdapter()
-    .getInstance()
-    .register(fastifyMultipart, {
-      attachFieldsToBody: true,
-      limits: {
-        fieldNameSize: 1024 * 10000000000000, // Max field name size in bytes
-        fieldSize: 1024 * 10000000000000, // Max field value size in bytes
-        fields: 100000, // Max number of non-file fields
-        fileSize: 1024 * 10000000000000, // For multipart forms, the max file size
-        files: 3, // Max number of file fields
-        headerPairs: 2000, // Max number of header key=>value pairs
-      },
-    });
+  await app.register(fastifyMultipart);
 
   const swaggerDocumentBuilder = new DocumentBuilder()
     .addBearerAuth()

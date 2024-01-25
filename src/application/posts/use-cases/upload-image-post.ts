@@ -1,10 +1,20 @@
 import { PrismaPostRepository } from "../repositories/prisma/prisma-post.repository";
-import { Injectable, NotFoundException } from "@nestjs/common";
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from "@nestjs/common";
 import { ExceptionsConstants } from "~/commons/consts/exceptions";
 import { UploadImagePostFile } from "../interfaces/upload-image-post.interface";
-import * as fs from "fs";
 import { randomUUID } from "crypto";
 import { getFileExtensionFromMimeType } from "~/helpers/get-file-extension";
+
+import { pipeline } from "stream";
+import * as util from "util";
+import * as fs from "fs";
+
+const pump = util.promisify(pipeline);
 
 @Injectable()
 export class UploadImagePost {
@@ -13,8 +23,16 @@ export class UploadImagePost {
   async execute(params: UploadImagePostFile) {
     const { req, id } = params;
 
-    if (!req.isMultipart()) {
-      throw new NotFoundException(ExceptionsConstants.FILE_NOT_FOUND);
+    const data = await req.file();
+
+    if (!data) {
+      return new BadRequestException(ExceptionsConstants.NO_FILE_UPLOADED);
+    }
+
+    await pump(data.file, fs.createWriteStream(data.filename));
+
+    if (data.file.truncated) {
+      throw new InternalServerErrorException(ExceptionsConstants.INTERNAL_SERVER_ERROR);
     }
 
     const post = await this.postRepository.findById(id);
@@ -23,20 +41,13 @@ export class UploadImagePost {
       throw new NotFoundException(ExceptionsConstants.POST_NOT_FOUND);
     }
 
-    // const { file } = await req.file();
-    const teste = await req.file();
+    const { mimetype, file } = data;
+    const typeExtension = getFileExtensionFromMimeType(mimetype);
+    const filePath = `./upload-post-image/${randomUUID()}${typeExtension}`;
 
-    console.log(teste);
+    const writeStream = fs.createWriteStream(filePath);
+    file.pipe(writeStream);
 
-    // const typeExtension = getFileExtensionFromMimeType(mimetype);
-
-    // console.log(typeExtension);
-
-    // for await (const part of file) {
-    //   const writeStream = fs.createWriteStream(
-    //     `./upload-post-image/${randomUUID()}.${typeExtension}`,
-    //   );
-    //   part.file.pipe(writeStream);
-    // }
+    await this.postRepository.updateImageById(id, filePath);
   }
 }

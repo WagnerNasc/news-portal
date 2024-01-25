@@ -102,7 +102,6 @@ export class PostsController {
   })
   @Post(":id/upload")
   async uploadFile(@Req() req: FastifyRequest, @Param("id") id: string) {
-    console.log(req.file);
     await this.uploadImagePost.execute({
       req,
       id,

@@ -14,6 +14,11 @@ export default async function main() {
       name: "user 02",
       email: "user02@user.com.br",
     },
+    {
+      id: "97f656f1-4f5c-446a-a74c-9022d157f133",
+      name: "user 03",
+      email: "user03@user.com.br",
+    },
   ];
 
   for await (const user of users) {

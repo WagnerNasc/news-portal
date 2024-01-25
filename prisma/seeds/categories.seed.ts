@@ -12,6 +12,10 @@ export default async function main() {
       id: "a305b849-2af4-44f9-a7c4-905bebb1e9f2",
       name: "economy",
     },
+    {
+      id: "85ac441c-a3ca-4f7d-a5e0-ad296e18a2b3",
+      name: "sports",
+    },
   ];
 
   for await (const category of categories) {

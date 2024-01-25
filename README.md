@@ -12,8 +12,15 @@ Before running the project, make sure you have the following requirements:
      ```shell
      npm i
      ```
-
 2. Running application:
+     ```shell
+     docker compose up -d
+     ```
+3. Running seed:
+     ```shell
+     npx prisma db seed
+     ```
+4. Running application:
      ```shell
      npm run start:dev
      ```

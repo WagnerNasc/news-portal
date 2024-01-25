@@ -9,12 +9,7 @@ import { ExceptionsConstants } from "~/commons/consts/exceptions";
 import { UploadImagePostFile } from "../interfaces/upload-image-post.interface";
 import { randomUUID } from "crypto";
 import { getFileExtensionFromMimeType } from "~/helpers/get-file-extension";
-
-import { pipeline } from "stream";
-import * as util from "util";
 import * as fs from "fs";
-
-const pump = util.promisify(pipeline);
 
 @Injectable()
 export class UploadImagePost {
@@ -28,8 +23,6 @@ export class UploadImagePost {
     if (!data) {
       return new BadRequestException(ExceptionsConstants.NO_FILE_UPLOADED);
     }
-
-    await pump(data.file, fs.createWriteStream(data.filename));
 
     if (data.file.truncated) {
       throw new InternalServerErrorException(ExceptionsConstants.INTERNAL_SERVER_ERROR);

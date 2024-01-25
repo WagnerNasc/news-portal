@@ -4,7 +4,7 @@ import { PrismaClientOptions } from "@prisma/client/runtime/library";
 
 @Injectable()
 export class PrismaService
-  extends PrismaClient<PrismaClientOptions, 'query' | 'info' | 'warn' | 'error'>
+  extends PrismaClient<PrismaClientOptions, "query" | "info" | "warn" | "error">
   implements OnModuleInit, OnModuleDestroy
 {
   private readonly logger = new Logger(PrismaService.name);

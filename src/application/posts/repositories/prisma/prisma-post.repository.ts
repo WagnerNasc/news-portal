@@ -3,7 +3,7 @@ import { ICreatePost } from "../../interfaces/create-post.interface";
 import { ExceptionsConstants } from "~/commons/consts/exceptions";
 import { PrismaService } from "~/infra/database/prisma.service";
 import { Post } from "@prisma/client";
-import { WherePostByAuthorId, WherePostByCategoryId } from "../../dtos";
+import { WherePost } from "../../dtos";
 
 @Injectable()
 export class PrismaPostRepository {
@@ -22,55 +22,32 @@ export class PrismaPostRepository {
     }
   }
 
-  async findManyByAuthorId(
-    params: WherePostByAuthorId,
-  ): Promise<Post[] | null> {
+  async findById(id: string): Promise<Post | null> {
     try {
-      const { authorId } = params;
-      const posts = await this.prisma.post.findMany({
+      const post = this.prisma.post.findUnique({
         where: {
-          authorId
+          id,
         },
       });
 
-      if (!posts) {
+      if (!post) {
         return null;
       }
 
-      return posts;
+      return post;
     } catch (error) {
       this.logger.error(error);
       throw new InternalServerErrorException(ExceptionsConstants.INTERNAL_SERVER_ERROR);
     }
   }
 
-  async countPostsByAuthorId(params: WherePostByAuthorId): Promise<number | null> {
+  async findMany(filter: WherePost): Promise<Post[] | null> {
     try {
-      const { authorId } = params;
-      const where = {
-        authorId
-      };
-
-      const count = await this.prisma.post.count({
-        where,
-      });
-
-      return count;
-    } catch (error) {
-      this.logger.error(error);
-      throw new InternalServerErrorException(ExceptionsConstants.INTERNAL_SERVER_ERROR);
-    }
-  }
-
-  async findManyByCategoryId(
-    params: WherePostByCategoryId,
-  ): Promise<Post[] | null> {
-    try {
-      const { categoryId } = params;
+      const { skip, take, ...where } = filter;
       const posts = await this.prisma.post.findMany({
-        where: {
-          categoryId
-        },
+        where,
+        skip,
+        take,
       });
 
       if (!posts) {
@@ -84,42 +61,14 @@ export class PrismaPostRepository {
     }
   }
 
-  async countPostsByCategoryId(params: WherePostByCategoryId): Promise<number | null> {
+  async countManyPosts(filter: WherePost): Promise<number | null> {
     try {
-      const { categoryId } = params;
-      const where = {
-        categoryId
-      };
-
+      const { skip, take, ...where } = filter;
       const count = await this.prisma.post.count({
         where,
+        skip,
+        take,
       });
-
-      return count;
-    } catch (error) {
-      this.logger.error(error);
-      throw new InternalServerErrorException(ExceptionsConstants.INTERNAL_SERVER_ERROR);
-    }
-  }
-
-  async findMany(): Promise<Post[] | null> {
-    try {
-      const posts = await this.prisma.post.findMany();
-
-      if (!posts) {
-        return null;
-      }
-
-      return posts;
-    } catch (error) {
-      this.logger.error(error);
-      throw new InternalServerErrorException(ExceptionsConstants.INTERNAL_SERVER_ERROR);
-    }
-  }
-
-  async countManyPosts(): Promise<number | null> {
-    try {
-      const count = await this.prisma.post.count();
 
       return count;
     } catch (error) {

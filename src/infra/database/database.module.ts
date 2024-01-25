@@ -6,16 +6,7 @@ import { PrismaCategoryRepository } from "~/application/categories/repositories/
 import { PrismaPostRepository } from "~/application/posts/repositories/prisma/prisma-post.repository";
 
 @Module({
-  providers: [
-    PrismaService,
-    PrismaUserRepository,
-    PrismaCategoryRepository,
-    PrismaPostRepository
-  ],
-  exports: [
-    PrismaUserRepository,
-    PrismaCategoryRepository,
-    PrismaPostRepository
-  ],
+  providers: [PrismaService, PrismaUserRepository, PrismaCategoryRepository, PrismaPostRepository],
+  exports: [PrismaUserRepository, PrismaCategoryRepository, PrismaPostRepository],
 })
 export class DatabaseModule {}

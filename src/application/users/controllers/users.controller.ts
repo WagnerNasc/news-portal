@@ -7,17 +7,13 @@ import { CreateUser } from "../use-cases/create-user";
 @ApiExtraModels(GetUserDto)
 @Controller("users")
 export class UsersController {
-  constructor(
-    private readonly createUser: CreateUser,
-  ) {}
+  constructor(private readonly createUser: CreateUser) {}
 
   @ApiOperation({
     description: "Method to create the user",
   })
   @Post()
-  async create(
-    @Body(ValidationPipe) createUserDto: CreateUserDto,
-  ) {
+  async create(@Body(ValidationPipe) createUserDto: CreateUserDto) {
     const user = await this.createUser.execute({
       ...createUserDto,
     });

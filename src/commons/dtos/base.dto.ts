@@ -20,7 +20,6 @@ export class BaseDto {
 
   @ApiHideProperty()
   @Exclude()
-
   public static factory<T, R>(
     ResponseDto: ClassConstructor<T>,
     plainResponseData: R,

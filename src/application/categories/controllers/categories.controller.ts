@@ -10,9 +10,7 @@ import { ApiDefaultResponse } from "~/commons/decorators/api-response";
 @ApiExtraModels(GetCategoryDto)
 @Controller("categories")
 export class CategoriesController {
-  constructor(
-    private readonly createCategory: CreateCategory,
-  ) {}
+  constructor(private readonly createCategory: CreateCategory) {}
 
   @ApiOperation({
     description: "Method to create the category",
@@ -31,9 +29,7 @@ export class CategoriesController {
   })
   @HttpCode(HttpStatus.CREATED)
   @Post()
-  async create(
-    @Body(ValidationPipe) createCategoryDto: CreateCategoryDto,
-  ) {
+  async create(@Body(ValidationPipe) createCategoryDto: CreateCategoryDto) {
     const category = await this.createCategory.execute({
       ...createCategoryDto,
     });

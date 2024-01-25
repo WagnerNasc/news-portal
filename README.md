@@ -1,6 +1,6 @@
-# Clean House API
+# News Portal API
 
-This project aims to provide customer data and map routes to the customer's home.
+This project aims to provide user news posts.
 
 ## Running Project
 

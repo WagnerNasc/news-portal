@@ -3,7 +3,6 @@ import { IgnoredPropertyName } from "commons/decorators";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 
-
 export interface Response<T> {
   statusCode: number;
   body: {

@@ -3,21 +3,11 @@ import { PostsController } from "./controllers/posts.controller";
 import { CreatePost } from "./use-cases/create-post";
 import { Module } from "@nestjs/common";
 import { GetAllPosts } from "./use-cases/get-all-posts";
-import { GetPostsByAuthorId } from "./use-cases/get-posts-by-author-id";
-import { GetPostsByCategoryId } from "./use-cases/get-posts-by-category-id";
-import { CacheModule } from "@nestjs/cache-manager";
+import { UploadImagePost } from "./use-cases/upload-image-post";
 
 @Module({
-  imports: [
-    DatabaseModule, 
-  ],
+  imports: [DatabaseModule],
   controllers: [PostsController],
-  providers: [
-    CreatePost,
-    GetAllPosts,
-    GetPostsByAuthorId,
-    GetPostsByCategoryId
-  ],
+  providers: [CreatePost, GetAllPosts, UploadImagePost],
 })
-
 export class PostModule {}

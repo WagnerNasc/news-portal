@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsNotEmpty, IsOptional, IsString, IsUUID } from "class-validator";
 
 export class CreatePostDto {
   @ApiProperty({ example: "Sample title" })
@@ -17,4 +17,13 @@ export class CreatePostDto {
   @IsString()
   image: string;
 
+  @ApiProperty({ example: "Sample content" })
+  @IsOptional()
+  @IsUUID()
+  authorId: string;
+
+  @ApiProperty({ example: "Sample path image" })
+  @IsOptional()
+  @IsUUID()
+  categoryId: string;
 }

@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Expose, Type } from "class-transformer";
+import { Expose } from "class-transformer";
 import { BaseDto } from "commons/dtos";
 
 export class GetPostDto extends BaseDto {
@@ -18,4 +18,12 @@ export class GetPostDto extends BaseDto {
   @ApiProperty({ example: "Sample path image" })
   @Expose()
   image: string;
+
+  @ApiProperty({ example: "Sample author id" })
+  @Expose()
+  authorId: string;
+
+  @ApiProperty({ example: "Sample category id" })
+  @Expose()
+  categoryId: string;
 }

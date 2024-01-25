@@ -1,1 +1,1 @@
-export * from './ignore-interceptor'
+export * from "./ignore-interceptor";

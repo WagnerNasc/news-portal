@@ -2,7 +2,6 @@ import { Injectable, InternalServerErrorException, Logger } from "@nestjs/common
 import { ICreateUser } from "../../interfaces/create-user.interface";
 import { ExceptionsConstants } from "~/commons/consts/exceptions";
 import { PrismaService } from "~/infra/database/prisma.service";
-import { UserRepository } from "../user.repository";
 import { User } from "@prisma/client";
 
 @Injectable()
@@ -11,9 +10,7 @@ export class PrismaUserRepository {
 
   constructor(private prisma: PrismaService) {}
 
-  async findByEmail(
-    email: string
-  ): Promise<User | null> {
+  async findByEmail(email: string): Promise<User | null> {
     try {
       const user = await this.prisma.user.findFirst({
         where: {
@@ -32,9 +29,7 @@ export class PrismaUserRepository {
     }
   }
 
-  async findById(
-    id: string
-  ): Promise<User | null> {
+  async findById(id: string): Promise<User | null> {
     try {
       const user = await this.prisma.user.findFirst({
         where: {
@@ -54,7 +49,6 @@ export class PrismaUserRepository {
   }
 
   async create(user: ICreateUser): Promise<User> {
-
     try {
       return this.prisma.user.create({
         data: user,
@@ -64,6 +58,4 @@ export class PrismaUserRepository {
       throw new InternalServerErrorException(ExceptionsConstants.INTERNAL_SERVER_ERROR);
     }
   }
-
-
 }

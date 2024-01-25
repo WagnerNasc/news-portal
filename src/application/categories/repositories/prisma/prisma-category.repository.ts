@@ -12,7 +12,7 @@ export class PrismaCategoryRepository {
 
   async findById(id: string): Promise<Category | null> {
     try {
-      const category = this.prisma.category.findUnique({
+      const category = await this.prisma.category.findUnique({
         where: {
           id,
         },

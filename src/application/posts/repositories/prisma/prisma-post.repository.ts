@@ -22,9 +22,25 @@ export class PrismaPostRepository {
     }
   }
 
+  async updateImageById(id: string, image: string): Promise<void> {
+    try {
+      await this.prisma.post.update({
+        where: {
+          id,
+        },
+        data: {
+          image,
+        },
+      });
+    } catch (error) {
+      this.logger.error(error);
+      throw new InternalServerErrorException(ExceptionsConstants.INTERNAL_SERVER_ERROR);
+    }
+  }
+
   async findById(id: string): Promise<Post | null> {
     try {
-      const post = this.prisma.post.findUnique({
+      const post = await this.prisma.post.findUnique({
         where: {
           id,
         },

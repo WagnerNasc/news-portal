@@ -72,7 +72,6 @@ export class PostsController {
   async findManyPosts(@Query(ValidationPipe) filter: FilterPostDto) {
     const { page, pageSize } = filter;
 
-    console.log({ filter });
     const pageNumber = page ?? 0;
 
     const { posts, count } = await this.getAllPosts.execute(filter);
